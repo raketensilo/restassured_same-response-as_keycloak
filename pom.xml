@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.raketensilo</groupId>
+    <artifactId>restassured-sameresponseas-keycloak</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <!-- maven properties -->
+        <java.version>1.8</java.version>
+        <junit.jupiter.version>5.3.1</junit.jupiter.version>
+        <junit.version>4.12</junit.version>
+        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.resources.version>3.1.0</maven.resources.version>
+        <maven.surefire.version>2.21.0</maven.surefire.version>
+        <maven.help.version>3.1.0</maven.help.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>kc1</id>
+            <!-- default profile -->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!-- profile-specific properties -->
+            <properties>
+                <keycloak.baseurl>http://localhost:9080/auth</keycloak.baseurl>
+                <keycloak.realm>master</keycloak.realm>
+                <keycloak.client_id>admin-cli</keycloak.client_id>
+                <keycloak.grant_type>password</keycloak.grant_type>
+                <keycloak.username>admin</keycloak.username>
+                <keycloak.password>admin</keycloak.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>kc2</id>
+            <!-- profile-specific properties -->
+            <properties>
+                <keycloak.baseurl>http://localhost:9081/auth</keycloak.baseurl>
+                <keycloak.realm>master</keycloak.realm>
+                <keycloak.client_id>admin-cli</keycloak.client_id>
+                <keycloak.grant_type>password</keycloak.grant_type>
+                <keycloak.username>admin</keycloak.username>
+                <keycloak.password>admin</keycloak.password>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <!-- Log4j2 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
+        </dependency>
+
+        <!-- Hamcrest -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>1.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>1.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
+            <version>2.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- hamcrest-json -->
+        <dependency>
+            <groupId>uk.co.datumedge</groupId>
+            <artifactId>hamcrest-json</artifactId>
+            <version>0.2</version>
+        </dependency>
+
+        <!-- JUnit4 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+
+        <!-- JUnit5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- RestAssured -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <!-- Jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- display active profile in compile phase -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>${maven.help.version}</version>
+                <executions>
+                    <execution>
+                        <id>show-profiles</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>active-profiles</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- substitution of variables in resources files with maven properties -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.version}</version>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <!-- filter for .properties files -->
+                            <directory>src/test/resources</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>*.properties</include>
+                            </includes>
+                        </resource>
+                        <!--<resource>-->
+                        <!--&lt;!&ndash; exclude everything else from filter &ndash;&gt;-->
+                        <!--<directory>src/test/resources</directory>-->
+                        <!--<filtering>false</filtering>-->
+                        <!--<excludes>-->
+                        <!--<exclude>${keycloak.properties}</exclude>-->
+                        <!--</excludes>-->
+                        <!--</resource>-->
+                    </resources>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- filtering JUnit tests that shall be picked up by maven mvn:test goal and fed into the JUnit platform -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+                <configuration>
+                    <includes>
+                        <include>RestAssuredSameResponseAsJsonKeycloak/RestAssuredSameResponseAsJsonKeycloakTest.java</include>
+                    </includes>
+                    <excludes></excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

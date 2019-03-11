@@ -1,0 +1,11 @@
+
+# ignore .idea folder
+# don't ignore .idea/runConfigurations
+.idea/*
+!.idea/runConfigurations
+
+# ignore target folder
+target
+
+# ignore IDEA project file
+*.iml
